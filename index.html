@@ -15,121 +15,101 @@
         #canvas {
             width: 100vw;
             height: 100vh;
+            cursor: url('https://www.kkkk1000.com/images/mouse.png') 16 22, auto;
         }
     </style>
 </head>
 
 <body>
-    <canvas id="canvas" ></canvas>
+    <!-- <canvas id="canvas" ></canvas> -->
+     <canvas id="canvas" width="400px" height="250px"></canvas>
     <script>
-        var canvas = document.getElementById("canvas");
+                var canvas = document.getElementById("canvas");
         var context = canvas.getContext("2d");
-        // canvas的宽度
-        var width = document.documentElement.clientWidth;
-        // canvas的高度
-        var height = document.documentElement.clientHeight;
 
-        init()
-        function init() {
-            // 先在canvas上画一个灰色的矩形
-            context.fillStyle = '#ddd';
-            context.fillRect(0, 0, width, height);
-            // 设置canvas的背景为一张图片
-            // canvas.style.background = 'url("./img/fairies.jpg") no-repeat center';
-            canvas.style.background = 'url("https://www.kkkk1000.com/images/bg3.jpg") no-repeat center';
-            canvas.style.backgroundSize = "100% 100%";
+        // 保存图片路径的数组
+        var urlArr = ["https://www.kkkk1000.com/images/bg2.png", "https://www.kkkk1000.com/images/clear.png"];
+        // imgArr 保存加载后的图片的数组，imgArr中保存的是真实的图片
+        // loadImg 函数用来加载 urlArr 中所有的图片
+        // 并返回一个保存所有图片的数组
+        var imgArr = loadImg(urlArr);
+        // flag 用来限制 点击事件，一张图片只会产生一次效果
+        var flag = false;
+ 
 
-            // 设置画的线的宽度         
-            context.lineWidth = 35;
-            // 设置线交汇时，是圆角的
-            context.lineJoin = "round";
-        }
+        function loadImg(urlArr) {
+            var index = 0;
+            var res = [];
+            // 每次给 load 函数传入一个图片路径，来加载图片
+            load(urlArr[index]);
+            function load(url) {
+                // 如果 index 等于 urlArr.length，
+                // 表示加载完 全部图片了，就结束 load函数
+                if (index == urlArr.length) {
+                    // 加载完全部图片，调用 init 函数
+                    init();
+                    return;
+                }
 
-
-
-        canvas.addEventListener('mousedown', mouseDown, false);
-        canvas.addEventListener('mousemove', mouseMove, false);
-        canvas.addEventListener('mouseup', mouseUp, false);
-
-        /* 如果需要移动端也可以生效，
-        需要绑定touchstart、touchmove、touchend 事件，并且获取触摸点的坐标
-        */
-        canvas.addEventListener('touchstart', mouseDown, false);
-        canvas.addEventListener('touchmove', mouseMove, false);
-        canvas.addEventListener('touchend', mouseUp, false);
-
-
-        // 判断是否可以画线
-        var isDrawing;
-        // 保存开始画线时，线的起点的X坐标
-        var startX = 0;
-        // 保存开始画线时，线的起点的Y坐标
-        var startY = 0;
-
-        // 按下鼠标按钮时，调用mouseDown
-        function mouseDown(e) {
-            isDrawing = true;
-            // 保存鼠标点击时 X坐标为，画线时，线的起点的X坐标
-            startX = e.layerX;
-            // 保存鼠标点击时 Y坐标为，画线时，线的起点的Y坐标
-            startY = e.layerY;
-
-            /* 移动端使用下面的方法 获取 startX 和 startY*/
-            startX = e.touches[0].clientX;
-            startY = e.touches[0].clientY;
-            
-        }
-
-        // 鼠标移动时，调用mouseDown
-        function mouseMove(e) {
-            if (isDrawing) {
-                // 获取鼠标相对于 canvas 的坐标
-                var x = e.layerX;
-                var y = e.layerY;
-
-                /* 移动端使用下面的方法 获取 x 和 y*/
-                var x = e.touches[0].clientX;
-                var y = e.touches[0].clientY;
-                
-                context.globalCompositeOperation = "destination-out";
-
-                // 开始画线
-                context.beginPath();
-                // 起点坐标为 startX 和 startY
-                context.moveTo(startX, startY);
-                // 结束的坐标为这次移动时的坐标
-                context.lineTo(x, y);
-                context.closePath();
-                context.stroke();
-
-                // 设置这次移动结束时的坐标，为下次开始画线时的坐标
-                startX = x;
-                startY = y;
-            }
-        }
-
-        // 松开鼠标按钮时，调用的事件
-        function mouseUp(e) {
-            // isDrawing 为false时，不可以画线
-            isDrawing = false;
-            // 获取图片像素信息
-            var data = context.getImageData(0, 0, width, height).data;
-            console.log("图片像素信息", data);
-            var length = data.length;
-            var k = 0;
-
-            // 如果一个像素是透明的（值都是0），k就+1
-            for (var i = 0; i < length - 3; i += 4) {
-                if (data[i] == 0 && data[i + 1] == 0 && data[i + 2] == 0 && data[i + 3] == 0) {
-                    k++;
+                var img = new Image();
+                img.src = url;
+                // 不管当前图片是否加载成功，都要加载下一张图片
+                img.onload = next;
+                img.onerror = function () {
+                    console.log(res[index] + "加载失败");
+                    next();
+                }
+                // next 用来加载下一张图片
+                function next() {
+                    // 把加载后的图片，保存到 res 中
+                    res[index] = img;
+                    load(urlArr[++index])
                 }
             }
+            // 最后返回保存所有真实图片的数组
+            return res;
+        }
 
-            // 当k > width*height*0.2 时，
-            // 也就是说有20%的面积是透明的时，就把整个canvas的背景显示出来
-            if (k > width * height * 0.8) {
-                context.fillStyle = "blue";
-                context.fillRect(0, 0, width, height);
+        function init() {
+            // 先在canvas上画黑白的图片，然后再设置背景是彩色的图片
+            // 避免先显示出彩色图片，再显示出黑白的图片
+            context.globalCompositeOperation = "source-over";
+            context.drawImage(imgArr[0], 0, 0, 400, 250);
+            canvas.style.background = 'url(https://www.kkkk1000.com/images/bg.jpg)';
+            canvas.style.backgroundSize = "100% 100%";
+
+            // flag 是 true 时，鼠标点击才有水滴扩散的效果
+            flag = true;
+            // canvas 绑定点击事件，点击时产生水滴扩散效果
+            canvas.onclick =  diffusion;
+        }
+
+        // width 表示 不规则形状的图片的尺寸
+        var width = 0;
+        // speed 表示扩散效果的速度
+        var speed = 8;
+        // diffusion 函数根据鼠标坐标，产生效果
+        function  diffusion (e) {
+            if (flag) {
+                flag = false;
+                context.globalCompositeOperation = "destination-out";
+                window.requestAnimationFrame(draw);
+                // 根据鼠标坐标，画扩散效果
+                function draw() {
+                    // 这里不一定需要是 1800 ，但必须是一个足够大的数，可以扩散出整张背景图
+                    if (width > 1800) {
+                        flag = true;
+                        return;
+                    }
+                    width += speed;
+                    // 获取鼠标相对于 canvas 的坐标
+                    var x = e.layerX;
+                    var y = e.layerY;
+
+                    // 画不规则形状的图片，逐渐增大图片尺寸
+                    context.drawImage(imgArr[1], x - (width / 2), y - (width / 2), width, width);
+                    window.requestAnimationFrame(draw);
+                }
             }
         }
 
