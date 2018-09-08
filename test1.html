@@ -7,10 +7,29 @@
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<title>Document</title>
 	<style>
+		 body {
+            padding: 0;
+            margin: 0;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        #canvas {
+        	display: none;
+        }
+
+        .my {
+        	width: 100vw;
+    		height: 100vh;
+        	background: url("./img/fairies.jpg") no-repeat center;
+    	    background-size: contain;
+        }
 	</style>
 </head>
 
 <body>
+	<div class="my"></div>
 	<canvas id="canvas" width="400px" height="250px"></canvas>
 	<script>
 		var canvas = document.getElementById("canvas");
@@ -117,7 +136,7 @@
 
 			// 当k > width*height*0.2 时，
 			// 也就是说有20%的面积是透明的时，就把整个canvas的背景显示出来
-			if (k > width * height * 0.2) {
+			if (k > width * height * 0.8) {
 				context.fillStyle = "blue";
 				context.fillRect(0, 0, width, height);
 			}
