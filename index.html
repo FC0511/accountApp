@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style type="text/css">
+        * {
+            padding: 0;
+            margin: 0;
+        }
+    </style>
+</head>
+<script src="https://cdn.bootcss.com/jquery/2.2.1/jquery.min.js"></script>
+<body>
+<span>555</span>
+<img src="test.png">
+<canvas id="myCanvas">
+    Your browser does not support the HTML5 canvas tag.
+</canvas>
+<script>
+    //准备img对象
+    /*var img = new Image();
+    img.src = 'test.png';
+
+    // 加载完成开始绘制
+    img.onload = function () {
+        var txt = "Hello World"
+        //准备canvas环境
+       	canvas = document.getElementById("myCanvas");
+        var ctx = canvas.getContext("2d");
+        // 绘制图片
+        ctx.drawImage(img, 0, 0);
+        // 绘制水印
+        ctx.font = "20px microsoft yahei";
+        ctx.fillStyle = "#105088";
+
+        ctx.fillText(txt, 100, 100);
+		
+		//var dataImg = canvas.toDataURL('image/jpeg');
+
+		console.log(canvas);
+        canvas.onclick = function (e) {
+            console.log(e)
+            console.log(ctx.measureText(txt))
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(img, 0, 0);
+            ctx.fillStyle = "red";
+            if (e.offsetX + ctx.measureText(txt).width >= canvas.width) {
+                x = canvas.width - ctx.measureText(txt).width;
+            }else {
+                x = e.offsetX;
+            }
+            ctx.fillText(txt, x, e.offsetY);
+        }
+    }*/
+
+    var canvas = document.getElementById("myCanvas"),//获取canvas
+        ctx = canvas.getContext("2d"), //对应的CanvasRenderingContext2D对象(画笔)
+        img = new Image(),//创建新的图片对象
+        base64 = '';//base64
+    img.src = 'test.png';
+    img.setAttribute("crossOrigin", 'Anonymous')
+
+    var imgRatio = img.naturalWidth / img.naturalHei ght;
+
+    canvas.width = 500;
+    canvas.height = canvas.width / imgRatio;
+
+    img.onload = function () {//图片加载完，再draw 和 toDataURL
+        //ctx.drawImage(img, 0, 0);
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        base64 = canvas.toDataURL("image/png");
+        //console.log(base64);
+        //$('img').attr('src', base64);
+    };
+
+</script>
+</body>
+
+<!--
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <style type="text/css">
+        #canvas {
+            border: thin solid blue;
+        }
+    </style>
+</head>
+
+<body>
+<p id="message"></p>
+<canvas id="canvas" width="1200" height="600"></canvas>
+</body>
+<script type="text/javascript">
+    var canvas = document.getElementById("canvas");
+    var context = canvas.getContext("2d");
+
+    function getLocation(x, y) {
+        var bbox = canvas.getBoundingClientRect();
+        return {
+            x: (x - bbox.left) * (canvas.width / bbox.width),
+            y: (y - bbox.top) * (canvas.height / bbox.height)
+
+            /*
+             * 此处不用下面两行是为了防止使用CSS和JS改变了canvas的高宽之后是表面积拉大而实际
+             * 显示像素不变而造成的坐标获取不准的情况
+            x: (x - bbox.left),
+            y: (y - bbox.top)
+            */
+        };
+    }
+    function drawHorizontalLine(y) {
+        context.beginPath();
+        context.moveTo(0, y);
+        context.lineTo(canvas.width, y);
+        context.stroke();
+        context.closePath();
+    }
+    function drawVerticalLine(x) {
+        context.beginPath();
+        context.moveTo(x, 0);
+        context.lineTo(x, canvas.height);
+        context.stroke();
+        context.closePath();
+    }
+    canvas.onmousemove = function (e) {
+        var location = getLocation(e.clientX, e.clientY);
+        var message = document.getElementById("message");
+        message.innerHTML = "x=" + location.x + " ,y=" + location.y;
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        drawHorizontalLine(location.y);
+        drawVerticalLine(location.x);
+    };
+
+    canvas.onclick = function (e) {
+        console.log(e)
+    }
+</script>
+</html>-->
