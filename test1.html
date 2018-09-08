@@ -44,9 +44,9 @@
 		/* 如果需要移动端也可以生效，
 		需要绑定touchstart、touchmove、touchend 事件，并且获取触摸点的坐标
 		*/
-		//canvas.addEventListener('touchstart', mouseDown, false);
-		//canvas.addEventListener('touchmove', mouseMove, false);
-		//canvas.addEventListener('touchend', mouseUp, false);
+		canvas.addEventListener('touchstart', mouseDown, false);
+		canvas.addEventListener('touchmove', mouseMove, false);
+		canvas.addEventListener('touchend', mouseUp, false);
 
 
 		// 判断是否可以画线
@@ -64,10 +64,10 @@
 			// 保存鼠标点击时 Y坐标为，画线时，线的起点的Y坐标
 			startY = e.layerY;
 
-			/* 移动端使用下面的方法 获取 startX 和 startY
+			/* 移动端使用下面的方法 获取 startX 和 startY*/
 			startX = e.touches[0].clientX;
 			startY = e.touches[0].clientY;
-			*/
+			
 		}
 
 		// 鼠标移动时，调用mouseDown
@@ -77,10 +77,10 @@
 				var x = e.layerX;
 				var y = e.layerY;
 
-				/* 移动端使用下面的方法 获取 x 和 y
+				/* 移动端使用下面的方法 获取 x 和 y*/
 				var x = e.touches[0].clientX;
 				var y = e.touches[0].clientY;
-				*/
+				
 				context.globalCompositeOperation = "destination-out";
 
 				// 开始画线
