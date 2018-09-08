@@ -37,9 +37,9 @@
 		var canvas = document.getElementById("canvas");
 		var context = canvas.getContext("2d");
 		// canvas的宽度
-		var width = 400;
-		// canvas的高度
-		var height = 150;
+        var width = document.documentElement.clientWidth;
+        // canvas的高度
+        var height = document.documentElement.clientHeight;
 
 		init()
 		function init() {
