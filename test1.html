@@ -18,7 +18,7 @@
         #canvas {
         	/*display: none;*/
         	width: 100vw;
-    		height: 100vh;
+    		/*height: 100vh;*/
         }
 
         .my {
@@ -32,7 +32,7 @@
 
 <body>
 	<!-- <div class="my"></div> -->
-	<canvas id="canvas"></canvas>
+	<canvas id="canvas" height="500px;"></canvas>
 	<script>
 		var canvas = document.getElementById("canvas");
 		var context = canvas.getContext("2d");
@@ -47,8 +47,9 @@
 			context.fillStyle = '#ddd';
 			context.fillRect(0, 0, width, height);
 			// 设置canvas的背景为一张图片
-			canvas.style.background = 'url("https://www.kkkk1000.com/images/bg3.jpg") no-repeat center';
-			canvas.style.backgroundSize = "100% 100%";
+			canvas.style.background = 'url("./img/fairies.jpg") no-repeat center'; 
+			// canvas.style.background = 'url("https://www.kkkk1000.com/images/bg3.jpg") no-repeat center';
+			canvas.style.backgroundSize = "80% 80%";
 
 			// 设置画的线的宽度			
 			context.lineWidth = 35;
