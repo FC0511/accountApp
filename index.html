@@ -28,7 +28,7 @@
         var context = canvas.getContext("2d");
 
         // 保存图片路径的数组
-        var urlArr = ["https://www.kkkk1000.com/images/bg2.png", "https://www.kkkk1000.com/images/clear.png"];
+        var urlArr = ["./img/fairies3.png", "https://www.kkkk1000.com/images/clear.png"];
         // imgArr 保存加载后的图片的数组，imgArr中保存的是真实的图片
         // loadImg 函数用来加载 urlArr 中所有的图片
         // 并返回一个保存所有图片的数组
@@ -75,7 +75,7 @@
             // 避免先显示出彩色图片，再显示出黑白的图片
             context.globalCompositeOperation = "source-over";
             context.drawImage(imgArr[0], 0, 0, 400, 250);
-            canvas.style.background = 'url(https://www.kkkk1000.com/images/bg.jpg)';
+            canvas.style.background = 'url(./img/fairies2.png)';
             canvas.style.backgroundSize = "100% 100%";
 
             // flag 是 true 时，鼠标点击才有水滴扩散的效果
@@ -87,7 +87,7 @@
         // width 表示 不规则形状的图片的尺寸
         var width = 0;
         // speed 表示扩散效果的速度
-        var speed = 8;
+        var speed = 4;
         // diffusion 函数根据鼠标坐标，产生效果
         function  diffusion (e) {
             if (flag) {
