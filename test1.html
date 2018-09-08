@@ -16,7 +16,9 @@
         }
 
         #canvas {
-        	display: none;
+        	/*display: none;*/
+        	width: 100vw;
+    		height: 100vh;
         }
 
         .my {
@@ -29,15 +31,15 @@
 </head>
 
 <body>
-	<div class="my"></div>
-	<canvas id="canvas" width="400px" height="250px"></canvas>
+	<!-- <div class="my"></div> -->
+	<canvas id="canvas"></canvas>
 	<script>
 		var canvas = document.getElementById("canvas");
 		var context = canvas.getContext("2d");
 		// canvas的宽度
 		var width = 400;
 		// canvas的高度
-		var height = 250;
+		var height = 150;
 
 		init()
 		function init() {
