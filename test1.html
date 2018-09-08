@@ -139,7 +139,7 @@
 
 			// 当k > width*height*0.2 时，
 			// 也就是说有20%的面积是透明的时，就把整个canvas的背景显示出来
-			if (k > width * height * 0.8) {
+			if (k > width * height * 0.6) {
 				context.fillStyle = "blue";
 				context.fillRect(0, 0, width, height);
 			}
