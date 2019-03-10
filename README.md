@@ -1,3 +1,3 @@
 npm install vue-cli -g
 
-vue init webpack vueDemo
+vue init webpack vueLic
