@@ -1,1 +1,3 @@
-1111122222222222
+npm install vue-cli -g
+
+vue init webpack vueDemo
