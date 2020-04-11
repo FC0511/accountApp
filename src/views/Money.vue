@@ -1,9 +1,9 @@
 <template>
 	<Layout class-prefix="layout">
 		<NumberPad/>
-		<Types/>
+		<Types :type.sync="type"/>
 		<Notes/>
-		<Tags/>
+		<Tags :data-source.sync="tagsArr"/>
 	</Layout>
 </template>
 
@@ -19,7 +19,9 @@
         components: {Types, Tags, Notes, NumberPad, Layout}
     })
     export default class Money extends Vue {
+        type = "+";
 
+        tagsArr = ["衣", "食", "住", "行"];
     }
 </script>
 

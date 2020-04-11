@@ -1,18 +1,26 @@
 <template>
 	<div>
 		<ul class="types">
-			<li class="selected">支出</li>
-			<li>收入</li>
+			<li :class="type && type === '-' && `selected`" @click="changeType('-')">支出</li>
+			<li :class="type && type === '+' && `selected`" @click="changeType('+')">收入</li>
 		</ul>
 	</div>
 </template>
 
 <script lang="ts">
-    import {Component, Vue} from "vue-property-decorator";
+    import {Component, Prop, Vue} from "vue-property-decorator";
 
     @Component
     export default class Types extends Vue {
+        @Prop(String) type!: string;
 
+        created(): void {
+            console.log(this.type);
+        }
+
+        changeType(type: string) {
+            this.$emit('update:type', type);
+        }
     }
 </script>
 
