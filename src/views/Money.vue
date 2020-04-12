@@ -1,35 +1,36 @@
 <template>
-	<Layout class-prefix="layout">
-		{{record}}
-		<NumberPad :value.sync="record.amount" @submit="saveRecord"/>
-		<Types :type.sync="record.type"/>
-		<div class="notes">
-			<FormItem field-name="备注"
-								placeholder="在这里输入备注"
-								@update:value="onUpdateNotes"
-			/>
-		</div>
-		<Tags :data-source.sync="tagsArr" @update:value="onUpdateSelect"/>
-	</Layout>
+    <Layout class-prefix="layout">
+        {{record}}
+        <NumberPad :value.sync="record.amount" @submit="saveRecord"/>
+        <Types :type.sync="record.type"/>
+        <div class="notes">
+            <FormItem field-name="备注"
+                      placeholder="在这里输入备注"
+                      @update:value="onUpdateNotes"
+            />
+        </div>
+        <Tags/>
+    </Layout>
 </template>
 
 <script lang="ts">
     import {Component, Vue, Watch} from "vue-property-decorator";
     import Layout from "@/components/Layout.vue";
     import NumberPad from "@/components/Money/NumberPad.vue";
-    import FormItem from '@/components/Money/FormItem.vue';
+    import FormItem from "@/components/Money/FormItem.vue";
     import Tags from "@/components/Money/Tags.vue";
     import Types from "@/components/Money/Types.vue";
-    import recordListModel from "@/models/recordListModel";
-    import tagListModel from "@/models/tagListModel";
 
     @Component({
-        components: {Types, Tags, FormItem, NumberPad, Layout}
+        components: {Types, Tags, FormItem, NumberPad, Layout},
+
+        computed: {
+            recordList() {
+                return this.$store.state.recordList;
+            }
+        }
     })
     export default class Money extends Vue {
-        type = "+";
-
-        recordList = recordListModel.fetch();
 
         record: RecordItem = {
             tages: [],
@@ -38,7 +39,9 @@
             amount: "10",
         };
 
-        tagsArr = tagListModel.fetch();
+        created(): void {
+            this.$store.commit("fetchRecords");
+        }
 
         // 获取被选中的tags
         onUpdateSelect(value: string[]) {
@@ -62,21 +65,19 @@
         }
 
         saveRecord() {
-            const cloneRecord = recordListModel.clone(this.record);
-            cloneRecord.date = new Date();
-            this.recordList.push(cloneRecord);
+            this.$store.commit("createRecord", this.record);
         }
 
         @Watch("recordList")
         onValueChange(val: string, oldVal: string) {
-            recordListModel.save(this.recordList);
+            this.$store.commit("saveRecords");
         }
     }
 </script>
 
 <style lang="scss">
-	.layout-content {
-		display: flex;
-		flex-direction: column-reverse;
-	}
+    .layout-content {
+        display: flex;
+        flex-direction: column-reverse;
+    }
 </style>
