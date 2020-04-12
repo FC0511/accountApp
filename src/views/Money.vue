@@ -1,7 +1,7 @@
 <template>
 	<Layout class-prefix="layout">
 		{{record}}
-		<NumberPad :value.sync="record.amount"/>
+		<NumberPad :value.sync="record.amount" @submit="saveRecord"/>
 		<Types :type.sync="record.type"/>
 		<Notes :value.sync="record.notes"/>
 		<Tags :data-source.sync="tagsArr" @update:value="onUpdateSelect"/>
@@ -9,7 +9,7 @@
 </template>
 
 <script lang="ts">
-    import {Component, Vue} from "vue-property-decorator";
+    import {Component, Vue, Watch} from "vue-property-decorator";
     import Layout from "@/components/Layout.vue";
     import NumberPad from "@/components/Money/NumberPad.vue";
     import Notes from "@/components/Money/Notes.vue";
@@ -20,7 +20,8 @@
         tages: string[]
         notes: string
         type: string
-        amount: string
+        amount: string // 数据类型
+        date?: Date // 类 / js构造函数   ？可以不存在
     }
 
     @Component({
@@ -29,6 +30,7 @@
     export default class Money extends Vue {
         type = "+";
 
+        recordList: Record[] = JSON.parse(window.localStorage.getItem('recordList') || '[]');
         record: Record = {
             tages: [],
             notes: "",
@@ -57,6 +59,17 @@
         onUpdateAmount(value: string) {
             console.log(value);
             this.record.amount = value;
+        }
+
+        saveRecord() {
+            const cloneRecord: Record = JSON.parse(JSON.stringify(this.record));
+            cloneRecord.date = new Date();
+            this.recordList.push(cloneRecord);
+        }
+
+        @Watch("recordList")
+        onValueChange(val: string, oldVal: string) {
+            localStorage.setItem("recordList", JSON.stringify(this.recordList));
         }
     }
 </script>
