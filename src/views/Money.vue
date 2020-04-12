@@ -1,9 +1,10 @@
 <template>
 	<Layout class-prefix="layout">
-		<NumberPad/>
-		<Types :type.sync="type"/>
-		<Notes/>
-		<Tags :data-source.sync="tagsArr"/>
+		{{record}}
+		<NumberPad :value.sync="record.amount"/>
+		<Types :type.sync="record.type"/>
+		<Notes :value.sync="record.notes"/>
+		<Tags :data-source.sync="tagsArr" @update:value="onUpdateSelect"/>
 	</Layout>
 </template>
 
@@ -15,13 +16,48 @@
     import Tags from "@/components/Money/Tags.vue";
     import Types from "@/components/Money/Types.vue";
 
+    type Record = {
+        tages: string[]
+        notes: string
+        type: string
+        amount: string
+    }
+
     @Component({
         components: {Types, Tags, Notes, NumberPad, Layout}
     })
     export default class Money extends Vue {
         type = "+";
 
+        record: Record = {
+            tages: [],
+            notes: "",
+            type: "+",
+            amount: "10",
+        };
+
         tagsArr = ["衣", "食", "住", "行"];
+
+        // 获取被选中的tags
+        onUpdateSelect(value: string[]) {
+            console.log(value);
+            this.record.tages = value;
+        }
+
+        onUpdateNotes(value: string) {
+            console.log(value);
+            this.record.notes = value;
+        }
+
+        onUpdateType(value: string) {
+            console.log(value);
+            this.record.type = value;
+        }
+
+        onUpdateAmount(value: string) {
+            console.log(value);
+            this.record.amount = value;
+        }
     }
 </script>
 

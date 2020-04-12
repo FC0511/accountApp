@@ -21,3 +21,10 @@ shims-vue.d.ts解决引用报错
 router-link active-class 高亮
 
 layout 通过classPrefix 在mone组件修改样式
+
+            
+@xxx="fn"  
+this.$emit('xxx', type);
+
+:type.sync="type"  
+this.$emit('update:type', type);
