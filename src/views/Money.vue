@@ -15,14 +15,8 @@
     import Notes from "@/components/Money/Notes.vue";
     import Tags from "@/components/Money/Tags.vue";
     import Types from "@/components/Money/Types.vue";
-
-    type Record = {
-        tages: string[]
-        notes: string
-        type: string
-        amount: string // 数据类型
-        date?: Date // 类 / js构造函数   ？可以不存在
-    }
+    import recordListModel from "@/models/recordListModel";
+    import tagListModel from "@/models/tagListModel";
 
     @Component({
         components: {Types, Tags, Notes, NumberPad, Layout}
@@ -30,15 +24,16 @@
     export default class Money extends Vue {
         type = "+";
 
-        recordList: Record[] = JSON.parse(window.localStorage.getItem('recordList') || '[]');
-        record: Record = {
+        recordList = recordListModel.fetch();
+
+        record: RecordItem = {
             tages: [],
             notes: "",
             type: "+",
             amount: "10",
         };
 
-        tagsArr = ["衣", "食", "住", "行"];
+        tagsArr = tagListModel.fetch();
 
         // 获取被选中的tags
         onUpdateSelect(value: string[]) {
@@ -62,14 +57,14 @@
         }
 
         saveRecord() {
-            const cloneRecord: Record = JSON.parse(JSON.stringify(this.record));
+            const cloneRecord = recordListModel.clone(this.record);
             cloneRecord.date = new Date();
             this.recordList.push(cloneRecord);
         }
 
         @Watch("recordList")
         onValueChange(val: string, oldVal: string) {
-            localStorage.setItem("recordList", JSON.stringify(this.recordList));
+            recordListModel.save(this.recordList);
         }
     }
 </script>

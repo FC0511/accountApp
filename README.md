@@ -28,3 +28,6 @@ this.$emit('xxx', type);
 
 :type.sync="type"  
 this.$emit('update:type', type);
+
+
+custom.d.ts  全局ts类型
